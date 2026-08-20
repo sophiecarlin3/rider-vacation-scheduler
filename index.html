@@ -1,12 +1,684 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>True Course Rider Vacation Scheduler</title>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <style>
+  :root {
+    --green: #0f5132;
+    --green-dark: #0b3f28;
+    --sage: #eef2e8;
+    --sage-soft: #f6f7f2;
+    --cream: #fbfaf6;
+    --text: #1f2933;
+    --muted: #6b7280;
+    --border: #d9ded6;
+    --white: #ffffff;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--white);
+    color: var(--text);
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 18px 14px 34px;
+  }
+
+  .brand-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .brand-logo {
+    width: 118px;
+    max-width: 32vw;
+    height: auto;
+    display: block;
+    margin: 0 auto 14px;
+  }
+
+  .brand-title {
+    margin: 0;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 30px;
+    line-height: 1.15;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    color: var(--green);
+  }
+
+  .brand-subtitle {
+    margin: 14px auto 0;
+    max-width: 520px;
+    font-size: 17px;
+    line-height: 1.5;
+    color: #40464d;
+  }
+
+  .card {
+    background: var(--cream);
+    border: 1px solid #eceee8;
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.04);
+  }
+
+  h1,
+  h2 {
+    margin: 0;
+  }
+
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--green);
+    font-size: 21px;
+    font-weight: 500;
+    letter-spacing: .4px;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .step-number {
+    width: 31px;
+    height: 31px;
+    border-radius: 50%;
+    background: var(--green);
+    color: var(--white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex: 0 0 auto;
+  }
+
+  .helper {
+    margin: 7px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  label {
+    display: block;
+    font-weight: 700;
+    margin: 14px 0 7px;
+    font-size: 14px;
+    color: #363c42;
+  }
+
+  input,
+  select {
+    width: 100%;
+    padding: 14px 13px;
+    font-size: 17px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: var(--white);
+    color: var(--text);
+  }
+
+  input:focus,
+  select:focus {
+    outline: none;
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(15,81,50,.08);
+  }
+
+  button {
+    width: 100%;
+    padding: 15px;
+    font-size: 17px;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  .primary {
+    background: var(--green);
+    color: var(--white);
+  }
+
+  .primary:hover {
+    background: var(--green-dark);
+  }
+
+  .secondary {
+    margin-top: 12px;
+    background: var(--sage);
+    color: var(--green-dark);
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .day-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin: 12px 0;
+    overflow: hidden;
+  }
+
+  .day-title {
+    background: linear-gradient(90deg, var(--sage), var(--sage-soft));
+    padding: 12px 14px;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--green-dark);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: .3px;
+  }
+
+  .horse-row {
+    padding: 12px 14px;
+    border-top: 1px solid #eceee9;
+    background: var(--white);
+  }
+
+  .horse-row:first-of-type {
+    border-top: none;
+  }
+
+  .horse-row label {
+    margin-top: 0;
+    color: var(--green-dark);
+    font-size: 16px;
+  }
+
+  .submit-note {
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.45;
+    margin-top: 10px;
+  }
+
+  .thank-you {
+    text-align: center;
+    color: var(--green);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 19px;
+    margin: 18px 0 6px;
+  }
+
+  .thank-you span {
+    display: block;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    margin-top: 4px;
+  }
+
+  @media (max-width: 600px) {
+    .wrap {
+      padding: 12px 10px 28px;
+    }
+
+    .brand-logo {
+      width: 104px;
+    }
+
+    .brand-title {
+      font-size: 27px;
+    }
+
+    .brand-subtitle {
+      font-size: 16px;
+    }
+
+    .card {
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    input,
+    select,
+    button {
+      font-size: 17px;
+    }
+  }
+</style>
 </head>
+
 <body>
-  <h1>True Course Rider Vacation Scheduler</h1>
-  <p>Public page is working!</p>
+  <div class="wrap">
+<div class="brand-header">
+  <img
+    class="brand-logo"
+    src="https://drive.google.com/thumbnail?id=1FRXFh5FQIkkOotZhSE3FtyzUT5Ujf9UZ&sz=w500"
+    alt="True Course"
+  >
+
+  <h1 class="brand-title">RIDER VACATION SCHEDULER</h1>
+
+  <p class="brand-subtitle">
+    Please enter your vacation dates, horses, and rider assignments below.
+  </p>
+</div>
+
+    <div class="card">
+<div class="section-title">
+  <span class="step-number">1</span>
+  <h2>YOUR NAME</h2>
+</div>
+
+<p class="helper">Who is submitting this form?</p>
+      <input id="clientName" type="text" placeholder="Example: Sophie">
+
+</div>
+
+<div class="card">
+  <div class="section-title">
+    <span class="step-number">2</span>
+    <h2>YOUR VACATION DATES</h2>
+  </div>
+
+  <p class="helper">Please select the first and last day you will be away.</p>
+      <label>First day away</label>
+      <input id="startDate" type="date">
+
+      <label>Last day away</label>
+      <input id="endDate" type="date">
+</div>
+
+<div class="card">
+  <div class="section-title">
+  <span class="step-number">3</span>
+  <h2>YOUR HORSES</h2>
+</div>
+
+<p class="helper">Select how many horses you need to schedule.</p>
+      <label>How many horses?</label>
+      <select id="horseCount">
+        <option value="">Choose</option>
+        <option value="1">1 horse</option>
+        <option value="2">2 horses</option>
+        <option value="3">3 horses</option>
+        <option value="4">4 horses</option>
+        <option value="5">5 horses</option>
+      </select>
+
+      <button class="secondary" onclick="buildHorseInputs()">Next</button>
+    </div>
+
+    <div id="horseCard" class="card hidden">
+      <h2>HORSE NAMES</h2>
+      <div id="horseInputs"></div>
+      <button class="secondary" onclick="buildSchedule()">Build My Schedule</button>
+    </div>
+
+    <div id="scheduleCard" class="card hidden">
+      <div class="section-title">
+  <span class="step-number">4</span>
+  <h2>ASSIGN RIDERS</h2>
+</div>
+
+<p class="helper">Choose a rider or Day Off for each horse on each day.</p>
+
+      <div id="schedule"></div>
+
+      <button class="primary" onclick="submitSchedule()">Submit Schedule</button>
+
+      <p class="submit-note">
+  Your schedule will be added to the trainer and staff calendar.
+</p>
+
+<p class="thank-you">
+  Thank you!
+  <span>TRUE COURSE</span>
+</p>
+    </div>
+
+<script>
+  const riderOptions = [
+    'Michaella',
+    'Leah',
+    'Charlotte',
+    'Other',
+    'Day Off'
+  ];
+
+  function buildHorseInputs() {
+    const count = Number(document.getElementById('horseCount').value);
+    const clientName = document.getElementById('clientName').value.trim();
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+    if (!clientName || !startDate || !endDate || !count) {
+      alert('Please complete your name, dates, and number of horses.');
+      return;
+    }
+
+    const start = new Date(startDate + 'T12:00:00');
+    const end = new Date(endDate + 'T12:00:00');
+    const days = Math.round((end - start) / 86400000) + 1;
+
+    if (end < start) {
+      alert('Your last day away cannot be before your first day.');
+      return;
+    }
+
+    if (days > 14) {
+      alert('Please enter a trip of 14 days or less.');
+      return;
+    }
+
+    let html = '';
+
+    for (let i = 1; i <= count; i++) {
+      html += `
+        <label>Horse ${i}</label>
+        <input id="horse${i}" type="text" placeholder="Horse name">
+      `;
+    }
+
+    document.getElementById('horseInputs').innerHTML = html;
+    document.getElementById('horseCard').classList.remove('hidden');
+    document.getElementById('horseCard').scrollIntoView({behavior:'smooth'});
+  }
+
+  function buildSchedule() {
+    const count = Number(document.getElementById('horseCount').value);
+    const horses = [];
+
+    for (let i = 1; i <= count; i++) {
+      const name = document.getElementById('horse' + i).value.trim();
+      if (!name) {
+        alert('Please enter every horse name.');
+        return;
+      }
+      horses.push(name);
+    }
+
+    const start = new Date(document.getElementById('startDate').value + 'T12:00:00');
+    const end = new Date(document.getElementById('endDate').value + 'T12:00:00');
+
+    let html = '';
+    let current = new Date(start);
+    let dayIndex = 0;
+
+    while (current <= end) {
+      const dateLabel = current.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'short',
+        day: 'numeric'
+      });
+
+      html += `<div class="day-card">`;
+      html += `<div class="day-title">${dateLabel}</div>`;
+
+      horses.forEach((horse, horseIndex) => {
+        const fieldId = `d${dayIndex}_h${horseIndex}`;
+
+        html += `
+          <div class="horse-row">
+            <label>${horse}</label>
+            <select id="${fieldId}" onchange="toggleOther('${fieldId}')">
+              <option value="">Choose rider</option>
+              ${riderOptions.map(r => `<option value="${r}">${r}</option>`).join('')}
+            </select>
+
+            <input
+              id="${fieldId}_other"
+              class="hidden"
+              type="text"
+              placeholder="Enter rider name"
+            >
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+
+      current.setDate(current.getDate() + 1);
+      dayIndex++;
+    }
+
+    document.getElementById('schedule').innerHTML = html;
+    document.getElementById('scheduleCard').classList.remove('hidden');
+    document.getElementById('scheduleCard').scrollIntoView({behavior:'smooth'});
+  }
+
+  function toggleOther(fieldId) {
+    const select = document.getElementById(fieldId);
+    const other = document.getElementById(fieldId + '_other');
+
+    if (select.value === 'Other') {
+      other.classList.remove('hidden');
+    } else {
+      other.classList.add('hidden');
+      other.value = '';
+    }
+  }
+
+ function submitSchedule() {
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbynn4jC9R7ensADNvmSYFDZuf963hLmlBzkeMuP6CLsz9qHNAPSQ7ieYC4x2iSVcw/exec';
+
+  const clientName = document.getElementById('clientName').value.trim();
+  const count = Number(document.getElementById('horseCount').value);
+  const start = new Date(document.getElementById('startDate').value + 'T12:00:00');
+  const end = new Date(document.getElementById('endDate').value + 'T12:00:00');
+
+  const horses = [];
+
+  for (let i = 1; i <= count; i++) {
+    const horseName = document.getElementById('horse' + i).value.trim();
+
+    if (!horseName) {
+      alert('Please enter every horse name.');
+      return;
+    }
+
+    horses.push(horseName);
+  }
+
+  const assignments = [];
+  let current = new Date(start);
+  let dayIndex = 0;
+
+  while (current <= end) {
+    const dateString =
+      current.getFullYear() + '-' +
+      String(current.getMonth() + 1).padStart(2, '0') + '-' +
+      String(current.getDate()).padStart(2, '0');
+
+    for (let horseIndex = 0; horseIndex < horses.length; horseIndex++) {
+      const horse = horses[horseIndex];
+      const fieldId = `d${dayIndex}_h${horseIndex}`;
+      const select = document.getElementById(fieldId);
+
+      if (!select || !select.value) {
+        alert(`Please choose a rider or Day Off for ${horse} on every day.`);
+        return;
+      }
+
+      let rider = select.value;
+
+      if (rider === 'Other') {
+        const otherName =
+          document.getElementById(fieldId + '_other').value.trim();
+
+        if (!otherName) {
+          alert(`Please enter the rider name for ${horse}.`);
+          return;
+        }
+
+        rider = otherName;
+      }
+
+      assignments.push({
+        horse: horse,
+        date: dateString,
+        rider: rider
+      });
+    }
+
+    current.setDate(current.getDate() + 1);
+    dayIndex++;
+  }
+
+  const data = {
+    clientName: clientName,
+    assignments: assignments
+  };
+
+  const submitButton = document.querySelector('.primary');
+  submitButton.disabled = true;
+  submitButton.textContent = 'Submitting...';
+
+  const iframe = document.createElement('iframe');
+  iframe.name = 'hiddenSubmitFrame';
+  iframe.style.display = 'none';
+  document.body.appendChild(iframe);
+
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = SCRIPT_URL;
+  form.target = 'hiddenSubmitFrame';
+  form.style.display = 'none';
+
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'scheduleData';
+  input.value = JSON.stringify(data);
+
+  form.appendChild(input);
+  document.body.appendChild(form);
+
+  form.submit();
+
+  setTimeout(function() {
+    document.querySelector('.wrap').innerHTML = `
+      <div class="card" style="text-align:center; margin-top:40px;">
+        <div style="
+          width:48px;
+          height:48px;
+          margin:0 auto 16px;
+          border-radius:50%;
+          background:#0f5132;
+          color:white;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:26px;
+        ">✓</div>
+
+        <h1 style="color:#0f5132;">Schedule Submitted!</h1>
+
+        <p style="font-size:17px; line-height:1.5;">
+          Thank you, ${clientName}! Your horse schedule has been sent to the barn.
+        </p>
+
+        <p style="color:#6b7280; margin-top:20px;">
+          Your schedule has been added to the trainer and staff calendar.
+        </p>
+
+        <p class="thank-you">
+          Thank you!
+          <span>TRUE COURSE</span>
+        </p>
+      </div>
+    `;
+
+    window.scrollTo(0, 0);
+  }, 1200);
+}
+  const assignments = [];
+  let current = new Date(start);
+  let dayIndex = 0;
+
+  while (current <= end) {
+    const dateString =
+      current.getFullYear() + '-' +
+      String(current.getMonth() + 1).padStart(2, '0') + '-' +
+      String(current.getDate()).padStart(2, '0');
+
+    horses.forEach((horse, horseIndex) => {
+      const fieldId = `d${dayIndex}_h${horseIndex}`;
+      const select = document.getElementById(fieldId);
+
+      if (!select.value) {
+        alert(`Please choose a rider or Day Off for ${horse} on every day.`);
+        throw new Error('Missing assignment');
+      }
+
+      let rider = select.value;
+
+      if (rider === 'Other') {
+        const otherName = document.getElementById(fieldId + '_other').value.trim();
+
+        if (!otherName) {
+          alert(`Please enter the rider name for ${horse}.`);
+          throw new Error('Missing other rider');
+        }
+
+        rider = otherName;
+      }
+
+      assignments.push({
+        horse: horse,
+        date: dateString,
+        rider: rider
+      });
+    });
+
+    current.setDate(current.getDate() + 1);
+    dayIndex++;
+  }
+
+  const submitButton = document.querySelector('.primary');
+  submitButton.disabled = true;
+  submitButton.textContent = 'Submitting...';
+
+  google.script.run
+    .withSuccessHandler(function(result) {
+  document.querySelector('.wrap').innerHTML = `
+    <div class="card" style="text-align:center; margin-top:40px;">
+      <div style="font-size:48px; margin-bottom:10px;">✓</div>
+
+      <h1>Schedule Submitted!</h1>
+
+      <p style="font-size:17px; line-height:1.5;">
+        Thank you, ${clientName}! Your horse schedule has been sent to the barn.
+      </p>
+
+      <p style="color:#666; margin-top:20px;">
+        If you need to make a correction, please contact the barn.
+      </p>
+    </div>
+  `;
+
+  window.scrollTo(0, 0);
+})
+    .withFailureHandler(function(error) {
+      alert('Something went wrong while submitting. Please try again.');
+      submitButton.disabled = false;
+      submitButton.textContent = 'Submit Schedule';
+      console.error(error);
+    })
+    .saveSchedule({
+      clientName: clientName,
+      assignments: assignments
+    });
+}
+</script>
 </body>
 </html>
