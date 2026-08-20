@@ -357,16 +357,44 @@
   ];
 
   function buildHorseInputs() {
-    const count = Number(document.getElementById('horseCount').value);
-    const clientName = document.getElementById('clientName').value.trim();
-    const startDate = document.getElementById('startDate').value;
-    const endDate = document.getElementById('endDate').value;
+  const count = Number(document.getElementById('horseCount').value);
+  const clientName = document.getElementById('clientName').value.trim();
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
 
-    if (!clientName || !startDate || !endDate || !count) {
-      alert('Please complete your name, dates, and number of horses.');
-      return;
-    }
+  if (!clientName || !startDate || !endDate || !count) {
+    alert('Please complete your name, dates, and number of horses.');
+    return;
+  }
 
+  const start = new Date(startDate + 'T12:00:00');
+  const end = new Date(endDate + 'T12:00:00');
+  const days = Math.round((end - start) / 86400000) + 1;
+
+  if (end < start) {
+    alert('Your last day away cannot be before your first day.');
+    return;
+  }
+
+  if (days > 14) {
+    alert('Please enter a trip of 14 days or less.');
+    return;
+  }
+
+  let html = '';
+
+  for (let i = 1; i <= count; i++) {
+    html += `
+      <label>Horse ${i}</label>
+      <input id="horse${i}" type="text" placeholder="Horse name">
+    `;
+  }
+
+  document.getElementById('horseInputs').innerHTML = html;
+  document.getElementById('horseCard').classList.remove('hidden');
+  document.getElementById('horseCard').scrollIntoView({ behavior: 'smooth' });
+}
+  
     const start = new Date(startDate + 'T12:00:00');
     const end = new Date(endDate + 'T12:00:00');
     const days = Math.round((end - start) / 86400000) + 1;
