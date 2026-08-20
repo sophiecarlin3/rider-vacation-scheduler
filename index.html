@@ -394,34 +394,6 @@
   document.getElementById('horseCard').classList.remove('hidden');
   document.getElementById('horseCard').scrollIntoView({ behavior: 'smooth' });
 }
-  
-    const start = new Date(startDate + 'T12:00:00');
-    const end = new Date(endDate + 'T12:00:00');
-    const days = Math.round((end - start) / 86400000) + 1;
-
-    if (end < start) {
-      alert('Your last day away cannot be before your first day.');
-      return;
-    }
-
-    if (days > 14) {
-      alert('Please enter a trip of 14 days or less.');
-      return;
-    }
-
-    let html = '';
-
-    for (let i = 1; i <= count; i++) {
-      html += `
-        <label>Horse ${i}</label>
-        <input id="horse${i}" type="text" placeholder="Horse name">
-      `;
-    }
-
-    document.getElementById('horseInputs').innerHTML = html;
-    document.getElementById('horseCard').classList.remove('hidden');
-    document.getElementById('horseCard').scrollIntoView({behavior:'smooth'});
-  }
 
   function buildSchedule() {
     const count = Number(document.getElementById('horseCount').value);
@@ -629,84 +601,7 @@
     window.scrollTo(0, 0);
   }, 1200);
 }
-  const assignments = [];
-  let current = new Date(start);
-  let dayIndex = 0;
-
-  while (current <= end) {
-    const dateString =
-      current.getFullYear() + '-' +
-      String(current.getMonth() + 1).padStart(2, '0') + '-' +
-      String(current.getDate()).padStart(2, '0');
-
-    horses.forEach((horse, horseIndex) => {
-      const fieldId = `d${dayIndex}_h${horseIndex}`;
-      const select = document.getElementById(fieldId);
-
-      if (!select.value) {
-        alert(`Please choose a rider or Day Off for ${horse} on every day.`);
-        throw new Error('Missing assignment');
-      }
-
-      let rider = select.value;
-
-      if (rider === 'Other') {
-        const otherName = document.getElementById(fieldId + '_other').value.trim();
-
-        if (!otherName) {
-          alert(`Please enter the rider name for ${horse}.`);
-          throw new Error('Missing other rider');
-        }
-
-        rider = otherName;
-      }
-
-      assignments.push({
-        horse: horse,
-        date: dateString,
-        rider: rider
-      });
-    });
-
-    current.setDate(current.getDate() + 1);
-    dayIndex++;
-  }
-
-  const submitButton = document.querySelector('.primary');
-  submitButton.disabled = true;
-  submitButton.textContent = 'Submitting...';
-
-  google.script.run
-    .withSuccessHandler(function(result) {
-  document.querySelector('.wrap').innerHTML = `
-    <div class="card" style="text-align:center; margin-top:40px;">
-      <div style="font-size:48px; margin-bottom:10px;">✓</div>
-
-      <h1>Schedule Submitted!</h1>
-
-      <p style="font-size:17px; line-height:1.5;">
-        Thank you, ${clientName}! Your horse schedule has been sent to the barn.
-      </p>
-
-      <p style="color:#666; margin-top:20px;">
-        If you need to make a correction, please contact the barn.
-      </p>
-    </div>
-  `;
-
-  window.scrollTo(0, 0);
-})
-    .withFailureHandler(function(error) {
-      alert('Something went wrong while submitting. Please try again.');
-      submitButton.disabled = false;
-      submitButton.textContent = 'Submit Schedule';
-      console.error(error);
-    })
-    .saveSchedule({
-      clientName: clientName,
-      assignments: assignments
-    });
-}
+  
 </script>
 </body>
 </html>
